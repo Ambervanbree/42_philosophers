@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 12:10:16 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/04 12:30:29 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/04 17:48:28 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,22 @@
 
 void	*routine(void *arg)
 {
-	int	*value;
-
-	value = malloc(sizeof(int));
-	value = (int *)arg;
-	printf("Thread input: %d\n", *value);
-	*value += 1;
-	printf("Thread result: %d\n", *value);
-	return ((void *)value);
+	printf("value is: %d\n", *(int *)arg);
+	return (0);
 }
 
 int	main()
 {
 	pthread_t	thread[3];
 	int			i;
-	int			res;
+	int			*a;
 
 	i = 0;
 	while (i < 3)
 	{
-		if (pthread_create(&thread[i], NULL, &routine, NULL) != 0)
+		a = malloc(sizeof(int));
+		*a = i;
+		if (pthread_create(&thread[i], NULL, &routine, a) != 0)
 		{
 			perror("failed to create thread");
 			return (1);
@@ -45,7 +41,7 @@ int	main()
 	i = 0;
 	while (i < 3)
 	{
-		if (pthread_join(thread[i], (void *)&res) != 0)
+		if (pthread_join(thread[i], NULL) != 0)
 			return (2);
 		i++;
 		printf("Thread %d is done\n", i);

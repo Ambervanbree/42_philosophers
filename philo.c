@@ -5,55 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/04 09:40:54 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/04 12:26:49 by avan-bre         ###   ########.fr       */
+/*   Created: 2022/01/04 15:06:27 by avan-bre          #+#    #+#             */
+/*   Updated: 2022/01/04 18:27:24 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*increment(void* arg)
+void	init_structure(t_data *data, char *argv[])
 {
-	int	*value;
+	int		i;
+//	t_philo	philo[data->nr_philo];
 
-	value = malloc(sizeof(int));
-	if (value == 0)
+	data->nr_philo = ft_atoi(argv[1]);
+	data->die_time = ft_atoi(argv[2]);
+	data->eat_time = ft_atoi(argv[3]);
+	data->zzz_time = ft_atoi(argv[4]);
+	if (argv[5])
+		data->nr_eat = ft_atoi(argv[5]);
+	i = -1;
+	while (++i < data->nr_philo)
 	{
-		perror("malloc failed");
-		return (NULL);
+		data->fork[i] = 0;
+	// 	philo[i].id = i + 1;
+	// 	philo[i].data = data;
 	}
-	value = (int*) arg;
-	printf("Thread input: %d\n", *value);
-	*value += 1;
-	printf("Thread result: %d\n", *value);
-	return ((void *)value);
 }
 
 int	main(int argc, char *argv[])
 {
-	pthread_t	thread[3];
-	int			i;
-	int			res;
-
-	i = 0;
-	printf("argc: %d\n", argc);
-	while (i < 3)
+	t_data	data;
+	
+	if (!(argc == 5 || argc == 6))
 	{
-		if (pthread_create(&thread[i], NULL, &increment, NULL) != 0)
-		{
-			perror("failed to create thread");
-			return (1);
-		}
-		i++;
-		printf("Thread %d created\n", i);
+		printf("Expected usage: ./philo <nr philo's> <time to death> <eating ");
+		printf("time> <sleeping time> optional: <nr of times eating>\n");
+		return (1);
 	}
-	i = 0;
-	while (i < 3)
-	{
-		if (pthread_join(thread[i], (void *)&res) != 0)
-			return (2);
-			i++;
-		printf("Thread %d is done\n", i);
-	}
-	return (0);
+	init_structure(&data, argv);
+	create_threads(&data);
 }
