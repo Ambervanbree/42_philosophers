@@ -6,42 +6,81 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:06:27 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/04 18:27:24 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:47:57 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_structure(t_data *data, char *argv[])
+int	init_program(t_data *data, char *argv[])
 {
 	int		i;
-//	t_philo	philo[data->nr_philo];
 
 	data->nr_philo = ft_atoi(argv[1]);
-	data->die_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
 	data->zzz_time = ft_atoi(argv[4]);
 	if (argv[5])
-		data->nr_eat = ft_atoi(argv[5]);
+		data->nr_meals = ft_atoi(argv[5]);
+	else
+		data->nr_meals = -1;
+	data->ate_enough = 0;
+	data->start_time = 0;
+	data->philo_died = 0;
+	data->philo = malloc(sizeof(t_philo) * data->nr_philo);
+	data->fork = malloc(sizeof(pthread_mutex_t) * data->nr_philo);
+	if (!data->philo || !data->fork)
+	{
+		perror("malloc failed");
+		return (0);
+	}
+	pthread_mutex_init(&data->still_alive, NULL);
 	i = -1;
 	while (++i < data->nr_philo)
 	{
-		data->fork[i] = 0;
-	// 	philo[i].id = i + 1;
-	// 	philo[i].data = data;
+		if (pthread_mutex_init(&data->fork[i], NULL) != 0)
+		{
+			perror("initialisation mutex failed");
+			return (0);
+		}
+		data->philo[i].nr_meals = 0;
+		data->philo[i].id = i + 1;
+		data->philo[i].data = data;
+		data->philo[i].last_meal = 0;
+		data->philo[i].just_ate = 0;
+		data->philo[i].just_slept = 0;
 	}
+	return (1);
+}
+
+void	finish_program(t_data *data)
+{
+	int	i;
+
+	pthread_mutex_destroy(&data->still_alive);
+	i = -1;
+	while (++i < data->nr_philo)
+		pthread_mutex_destroy(&data->fork[i]);
+	free(data->fork);
+	free(data->philo);
 }
 
 int	main(int argc, char *argv[])
 {
 	t_data	data;
-	
+
 	if (!(argc == 5 || argc == 6))
 	{
 		printf("Expected usage: ./philo <nr philo's> <time to death> <eating ");
 		printf("time> <sleeping time> optional: <nr of times eating>\n");
 		return (1);
 	}
-	init_structure(&data, argv);
-	create_threads(&data);
+	if (init_program(&data, argv) == 0)
+		return (1);
+	if (create_threads(&data) == 0)
+	{
+		free(data.fork);
+		free(data.philo);
+		return (1);
+	}
+	finish_program(&data);
 }
