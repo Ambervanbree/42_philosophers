@@ -33,7 +33,7 @@ typedef struct s_data
 	long			start_time;
 	struct s_philo	*philo;
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	still_alive;
+	pthread_mutex_t	time_up;
 }	t_data;
 
 typedef struct s_philo

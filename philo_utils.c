@@ -51,28 +51,25 @@ int	ft_atoi(const char *str)
 
 int	your_time_is_up(t_philo *philo)
 {
-//	pthread_mutex_lock(&philo->data->still_alive);
+	pthread_mutex_lock(&philo->data->time_up);
 	if (philo->data->philo_died)
 	{
-		printf("somebody is already dead\n");
-//		pthread_mutex_unlock(&philo->data->still_alive);
+		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);
 	}
 	if (philo->data->ate_enough == philo->data->nr_philo)
 	{
-		printf("everybody ate enough\n");
-//		pthread_mutex_unlock(&philo->data->still_alive);
+		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);
 	}
-	printf("philo %d had a last meal %d - %d = %d ms ago\n", philo->id, timestamp(philo->data), philo->last_meal, timestamp(philo->data) - philo->last_meal);
-	if ((timestamp(philo->data) - philo->last_meal) > philo->data->die_time
-			&& philo->last_meal != 0)
+	if ((timestamp(philo->data) - philo->last_meal) > philo->data->die_time)
 	{
 		philo->data->philo_died = 1;
 		printf("%d Philo %d died\n", timestamp(philo->data), philo->id);
-//		pthread_mutex_unlock(&philo->data->still_alive);
+		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->data->time_up);
 	return (0);
 }
 

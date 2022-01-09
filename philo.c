@@ -17,6 +17,7 @@ int	init_program(t_data *data, char *argv[])
 	int		i;
 
 	data->nr_philo = ft_atoi(argv[1]);
+	data->die_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
 	data->zzz_time = ft_atoi(argv[4]);
 	if (argv[5])
@@ -33,7 +34,7 @@ int	init_program(t_data *data, char *argv[])
 		perror("malloc failed");
 		return (0);
 	}
-	pthread_mutex_init(&data->still_alive, NULL);
+	pthread_mutex_init(&data->time_up, NULL);
 	i = -1;
 	while (++i < data->nr_philo)
 	{
@@ -56,7 +57,7 @@ void	finish_program(t_data *data)
 {
 	int	i;
 
-	pthread_mutex_destroy(&data->still_alive);
+	pthread_mutex_destroy(&data->time_up);
 	i = -1;
 	while (++i < data->nr_philo)
 		pthread_mutex_destroy(&data->fork[i]);
@@ -68,7 +69,7 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 
-	if (!(argc == 5 || argc == 6))
+	if (!(argc == 5 || argc == 6) || ft_atoi(argv[1]) < 1)
 	{
 		printf("Expected usage: ./philo <nr philo's> <time to death> <eating ");
 		printf("time> <sleeping time> optional: <nr of times eating>\n");
@@ -76,6 +77,13 @@ int	main(int argc, char *argv[])
 	}
 	if (init_program(&data, argv) == 0)
 		return (1);
+	if (ft_atoi(argv[1]) == 1)
+	{
+		printf("%d Philo 1 has died\n", timestamp(&data));
+		free(data.fork);
+		free(data.philo);
+		return (1);
+	}
 	if (create_threads(&data) == 0)
 	{
 		free(data.fork);

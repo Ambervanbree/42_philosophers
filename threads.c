@@ -69,7 +69,7 @@ int	create_threads(t_data *data)
 			perror("failed to join thread");
 			return (0);
 		}
-		printf("Philo %d is joined\n", i);
+//		printf("Philo %d is joined\n", i);
 	}
 	return (1);
 }

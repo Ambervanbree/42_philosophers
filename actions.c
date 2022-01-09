@@ -33,7 +33,7 @@ void	lock_mutexes(t_philo *philo)
 
 void	unlock_mutexes(t_philo *philo)
 {
-	pthread_mutex_unlock(&(philo->data->fork[philo->id - 1]));
+	pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
 //	printf("Philo %d dropped fork %d\n", philo->id, philo->id - 1);
 	if (philo->id == philo->data->nr_philo)
 	{
@@ -49,9 +49,12 @@ void	unlock_mutexes(t_philo *philo)
 
 int	philo_is_eating(t_philo *philo)
 {
-	if (your_time_is_up(philo))
-		return (0);
 	lock_mutexes(philo);
+	if (your_time_is_up(philo))
+	{
+		unlock_mutexes(philo);
+		return (0);
+	}
 	printf("%d Philo %d has taken a fork\n", timestamp(philo->data), philo->id);
 	printf("%d Philo %d is eating\n", timestamp(philo->data), philo->id);
 	controlled_sleep(philo->data, 2);
