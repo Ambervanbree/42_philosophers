@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:27:05 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/06 17:48:21 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 14:58:30 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	first_round(t_philo *philo)
 {
 	if (philo->id % 2 && philo->id != philo->data->nr_philo)
-			philo_is_eating(philo);
+		philo_is_eating(philo);
 	else
-			philo_is_thinking(philo);
+		philo_is_thinking(philo);
 }
 
 void	*philo_routine(void *arg)
@@ -57,7 +57,7 @@ int	create_threads(t_data *data)
 		if (pthread_create(&data->philo[i].thread, NULL, &philo_routine,
 				(void *)&data->philo[i]) != 0)
 		{
-			perror("failed to creat thread");
+			perror("failed to create thread");
 			return (0);
 		}
 	}
@@ -69,7 +69,6 @@ int	create_threads(t_data *data)
 			perror("failed to join thread");
 			return (0);
 		}
-//		printf("Philo %d is joined\n", i);
 	}
 	return (1);
 }

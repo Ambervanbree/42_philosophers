@@ -6,16 +6,36 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:06:27 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/06 17:47:57 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 10:29:20 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int	init_philos(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nr_philo)
+	{
+		if (pthread_mutex_init(&data->fork[i], NULL) != 0)
+		{
+			perror("initialisation mutex failed");
+			return (0);
+		}
+		data->philo[i].nr_meals = 0;
+		data->philo[i].id = i + 1;
+		data->philo[i].data = data;
+		data->philo[i].last_meal = 0;
+		data->philo[i].just_ate = 0;
+		data->philo[i].just_slept = 0;
+	}
+	return (1);
+}
+
 int	init_program(t_data *data, char *argv[])
 {
-	int		i;
-
 	data->nr_philo = ft_atoi(argv[1]);
 	data->die_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
@@ -35,21 +55,8 @@ int	init_program(t_data *data, char *argv[])
 		return (0);
 	}
 	pthread_mutex_init(&data->time_up, NULL);
-	i = -1;
-	while (++i < data->nr_philo)
-	{
-		if (pthread_mutex_init(&data->fork[i], NULL) != 0)
-		{
-			perror("initialisation mutex failed");
-			return (0);
-		}
-		data->philo[i].nr_meals = 0;
-		data->philo[i].id = i + 1;
-		data->philo[i].data = data;
-		data->philo[i].last_meal = 0;
-		data->philo[i].just_ate = 0;
-		data->philo[i].just_slept = 0;
-	}
+	if (init_philos(data) == 0)
+		return (0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:24:42 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/06 18:26:07 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 15:16:30 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	your_time_is_up(t_philo *philo)
 	if ((timestamp(philo->data) - philo->last_meal) > philo->data->die_time)
 	{
 		philo->data->philo_died = 1;
+		usleep(10000);
 		printf("%d Philo %d died\n", timestamp(philo->data), philo->id);
 		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);
@@ -89,16 +90,11 @@ int	timestamp(t_data *data)
 	return (ret = ms / 10 - data->start_time);
 }
 
-void	controlled_sleep(t_data *data, int code)
+void	controlled_sleep(t_philo *philo, int time_ms)
 {
-	int				zzz;
-	int				et;
+	int				end_time;
 
-	if (code == 1)
-		zzz = data->zzz_time;
-	else
-		zzz = data->eat_time;
-	et = timestamp(data) + zzz;
-	while (timestamp(data) < et)
+	end_time = timestamp(philo->data) + time_ms;
+	while (timestamp(philo->data) < end_time && !your_time_is_up(philo))
 		usleep(100);
 }

@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 09:40:26 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/06 15:34:47 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 10:45:24 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ int		philo_is_eating(t_philo *philo);
 int		philo_is_sleeping(t_philo *philo);
 int		philo_is_thinking(t_philo *philo);
 int		your_time_is_up(t_philo *philo);
-void	controlled_sleep(t_data *data, int code);
+void	controlled_sleep(t_philo *philo, int code);
 
 #endif
