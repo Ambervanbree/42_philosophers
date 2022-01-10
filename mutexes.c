@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 15:56:01 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 16:36:16 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 17:10:05 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ int	check_meals(t_data *data)
 	pthread_mutex_unlock(&data->meals);
 	return (ret);
 }
-

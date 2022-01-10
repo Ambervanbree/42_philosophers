@@ -6,7 +6,7 @@
 #    By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/04 09:37:23 by avan-bre          #+#    #+#              #
-#    Updated: 2022/01/10 16:36:59 by avan-bre         ###   ########.fr        #
+#    Updated: 2022/01/10 17:08:22 by avan-bre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ RM		=	@rm -rf
 CC		=	@clang
 IFLAGS	=	-I.
 TFLAGS	=	-pthread
-CFLAGS	:=	-Wall -Werror -Wextra $(IFLAGS) -fsanitize=thread
+CFLAGS	:=	-Wall -Werror -Wextra $(IFLAGS)
 SRCS	=	philo.c philo_utils.c threads.c actions.c mutexes.c
 OBJS	=	$(SRCS:.c=.o)
 
@@ -34,7 +34,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 	@echo "Compiling sources.."
-	$(CC) $(IFLAGS) $(TFLAGS) $(OBJS) -o $@ -fsanitize=thread
+	$(CC) $(IFLAGS) $(TFLAGS) $(OBJS) -o $@
 	@echo "Ready!"
 
 clean:
