@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 09:40:26 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 10:45:24 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 16:36:28 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_data
 	struct s_philo	*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	time_up;
+	pthread_mutex_t	meals;
 }	t_data;
 
 typedef struct s_philo
@@ -55,5 +56,7 @@ int		philo_is_sleeping(t_philo *philo);
 int		philo_is_thinking(t_philo *philo);
 int		your_time_is_up(t_philo *philo);
 void	controlled_sleep(t_philo *philo, int code);
+void	increment_meals(t_data *data);
+int		check_meals(t_data *data);
 
 #endif

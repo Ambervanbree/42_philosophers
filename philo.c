@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 15:06:27 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 10:29:20 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 16:36:12 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	init_program(t_data *data, char *argv[])
 		return (0);
 	}
 	pthread_mutex_init(&data->time_up, NULL);
+	pthread_mutex_init(&data->meals, NULL);
 	if (init_philos(data) == 0)
 		return (0);
 	return (1);
@@ -65,6 +66,7 @@ void	finish_program(t_data *data)
 	int	i;
 
 	pthread_mutex_destroy(&data->time_up);
+	pthread_mutex_init(&data->meals, NULL);
 	i = -1;
 	while (++i < data->nr_philo)
 		pthread_mutex_destroy(&data->fork[i]);

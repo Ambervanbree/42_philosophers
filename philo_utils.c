@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:24:42 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 15:16:30 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 16:36:11 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	your_time_is_up(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);
 	}
-	if (philo->data->ate_enough == philo->data->nr_philo)
+	if (check_meals(philo->data) == philo->data->nr_philo)
 	{
 		pthread_mutex_unlock(&philo->data->time_up);
 		return (1);

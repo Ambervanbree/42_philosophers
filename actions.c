@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 14:42:25 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 14:59:20 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 16:36:10 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	philo_is_eating(t_philo *philo)
 	philo->just_ate = 1;
 	philo->nr_meals++;
 	if (philo->nr_meals == philo->data->nr_meals)
-		philo->data->ate_enough++;
+		increment_meals(philo->data);
 	unlock_mutexes(philo);
 	return (1);
 }
