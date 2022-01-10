@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 14:42:25 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 16:46:40 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 17:00:02 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int	lock_mutexes(t_philo *philo)
 
 void	unlock_mutexes(t_philo *philo)
 {
-	pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
 	if (philo->id == philo->data->nr_philo)
 		pthread_mutex_unlock(&philo->data->fork[0]);
 	else
 		pthread_mutex_unlock(&philo->data->fork[philo->id]);
+	pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
 }
 
 int	philo_is_eating(t_philo *philo)
