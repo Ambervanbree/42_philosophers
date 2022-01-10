@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 14:42:25 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 16:36:10 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/10 16:46:40 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	lock_mutexes(t_philo *philo)
 		if (pthread_mutex_lock(&philo->data->fork[0]) != 0)
 		{
 			perror("mutex lock failed");
-			pthread_mutex_lock(&philo->data->fork[philo->id - 1]);
+			pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
 			return (0);
 		}
 	}
@@ -33,7 +33,7 @@ int	lock_mutexes(t_philo *philo)
 		if (pthread_mutex_lock(&philo->data->fork[philo->id]) != 0)
 		{
 			perror("mutex lock failed");
-			pthread_mutex_lock(&philo->data->fork[philo->id - 1]);
+			pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
 			return (0);
 		}
 	}
