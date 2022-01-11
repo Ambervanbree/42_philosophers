@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 17:31:42 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 17:33:56 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	*butler_routine(void *arg)
 		philo_died(philo->data, ADD);
 		express_yourself(philo, DIE);
 	}
+	pthread_exit(NULL);
 	return (0);
 }
 
@@ -41,7 +42,7 @@ int	philo_is_eating(t_philo *philo)
 		perror("failed to create thread");
 		return (0);
 	}
-	pthread_detach(philo->butler);
+//	pthread_detach(philo->butler);
 	nr_meals_philo(philo, ADD);
 	express_yourself(philo, EAT);
 	controlled_sleep(philo, philo->data->eat_time);
