@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/04 10:24:42 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 16:36:11 by avan-bre         ###   ########.fr       */
+/*   Created: 2022/01/11 10:48:14 by avan-bre          #+#    #+#             */
+/*   Updated: 2022/01/11 12:18:33 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,19 @@ int	ft_atoi(const char *str)
 	return ((int)ret * neg);
 }
 
-int	your_time_is_up(t_philo *philo)
+int	ft_strlen(char *s)
 {
-	pthread_mutex_lock(&philo->data->time_up);
-	if (philo->data->philo_died)
-	{
-		pthread_mutex_unlock(&philo->data->time_up);
-		return (1);
-	}
-	if (check_meals(philo->data) == philo->data->nr_philo)
-	{
-		pthread_mutex_unlock(&philo->data->time_up);
-		return (1);
-	}
-	if ((timestamp(philo->data) - philo->last_meal) > philo->data->die_time)
-	{
-		philo->data->philo_died = 1;
-		usleep(10000);
-		printf("%d Philo %d died\n", timestamp(philo->data), philo->id);
-		pthread_mutex_unlock(&philo->data->time_up);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->data->time_up);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	write(fd, s, ft_strlen(s));
 }
 
 int	timestamp(t_data *data)
@@ -95,6 +85,6 @@ void	controlled_sleep(t_philo *philo, int time_ms)
 	int				end_time;
 
 	end_time = timestamp(philo->data) + time_ms;
-	while (timestamp(philo->data) < end_time && !your_time_is_up(philo))
+	while (timestamp(philo->data) < end_time)
 		usleep(100);
 }

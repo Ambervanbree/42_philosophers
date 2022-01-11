@@ -5,19 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/04 15:27:05 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/10 16:36:15 by avan-bre         ###   ########.fr       */
+/*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
+/*   Updated: 2022/01/11 16:10:06 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	lonely_philosopher(t_data *data)
+{
+	express_yourself(&data->philo[0], THINK);
+	express_yourself(&data->philo[0], FORK);
+	controlled_sleep(&data->philo[0], data->die_time);
+	express_yourself(&data->philo[0], DIE);
+	exit_program(data);
+	return (1);
+}
 
 void	first_round(t_philo *philo)
 {
 	if (philo->id % 2 && philo->id != philo->data->nr_philo)
 		philo_is_eating(philo);
 	else
+	{
 		philo_is_thinking(philo);
+		controlled_sleep(philo, philo->data->eat_time);
+	}
 }
 
 void	*philo_routine(void *arg)
@@ -54,7 +67,9 @@ int	create_threads(t_data *data)
 	i = -1;
 	while (++i < data->nr_philo)
 	{
-		if (pthread_create(&data->philo[i].thread, NULL, &philo_routine,
+		if (pthread_create(&data->philo[i].philo, NULL, &philo_routine,
+				(void *)&data->philo[i]) != 0 || 
+				pthread_create(&data->philo[i].butler, NULL, &butler_routine,
 				(void *)&data->philo[i]) != 0)
 		{
 			perror("failed to create thread");
@@ -64,11 +79,12 @@ int	create_threads(t_data *data)
 	i = -1;
 	while (++i < data->nr_philo)
 	{
-		if (pthread_join(data->philo[i].thread, NULL) != 0)
+		if (pthread_join(data->philo[i].philo, NULL) != 0)
 		{
 			perror("failed to join thread");
 			return (0);
 		}
 	}
+	exit_program(data);
 	return (1);
 }
