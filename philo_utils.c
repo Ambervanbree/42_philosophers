@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:48:14 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 12:18:33 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:17:39 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,16 @@ int	timestamp(t_data *data)
 	int				ret;
 	struct timeval	current_time;
 
+	pthread_mutex_lock(&data->time);
 	gettimeofday(&current_time, NULL);
 	ms = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;
 	if (data->start_time == 0)
 	{
 		data->start_time = ms / 10;
+		pthread_mutex_unlock(&data->time);
 		return (0);
 	}
+	pthread_mutex_unlock(&data->time);
 	return (ret = ms / 10 - data->start_time);
 }
 

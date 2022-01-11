@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:00:24 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:15:52 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	exit_program(t_data *data)
 	pthread_mutex_destroy(&data->speaking);
 	pthread_mutex_destroy(&data->time_up);
 	pthread_mutex_destroy(&data->full);
+	pthread_mutex_destroy(&data->time);
+	pthread_mutex_destroy(&data->butler);
 	i = -1;
 	while (++i < data->nr_philo)
 	{
@@ -70,6 +72,8 @@ int	init_program(t_data *data, char *argv[])
 	pthread_mutex_init(&data->speaking, NULL);
 	pthread_mutex_init(&data->time_up, NULL);
 	pthread_mutex_init(&data->full, NULL);
+	pthread_mutex_init(&data->time, NULL);
+	pthread_mutex_init(&data->butler, NULL);
 	if (init_philos(data) == 0)
 		return (0);
 	return (1);

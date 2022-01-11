@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:09:54 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:16:48 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,21 @@ void	*butler_routine(void *arg)
 	int		nr_meals;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->butler);
 	pthread_detach(philo->butler);
 	nr_meals = nr_meals_philo(philo, CHECK);
 	controlled_sleep(philo, philo->data->die_time);
 	if (your_time_is_up(philo))
+	{
+		pthread_mutex_unlock(&philo->data->butler);
 		return (0);
+	}
 	if (nr_meals_philo(philo, CHECK) == nr_meals)
 	{
 		philo_died(philo->data, ADD);
 		express_yourself(philo, DIE);
 	}
+	pthread_mutex_unlock(&philo->data->butler);
 	return (0);
 }
 
