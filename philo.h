@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:08:06 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:42:22 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:53:32 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_data
 	pthread_mutex_t	full;
 	pthread_mutex_t	time;
 	pthread_mutex_t	butler;
+	pthread_mutex_t	threads;
 }	t_data;
 
 typedef struct s_philo
