@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 16:16:29 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 17:07:57 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	incorrect_usage(int argc, char *argv[])
 	i = 1;
 	while (argv[++i])
 	{
-		if (ft_atoi(argv[i]) == 0 && ft_strlen(argv[i]) > 1)
+		if ((ft_atoi(argv[i]) == 0 && ft_strlen(argv[i]) > 1) || ft_atoi(argv[i]) < 0)
 		{
 			ft_putstr_fd("Error: Invalid argument detected\n", 2);
 			return (1);
