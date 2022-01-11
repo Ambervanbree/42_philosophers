@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:15:55 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:30:38 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	first_round(t_philo *philo)
 		philo_is_eating(philo);
 	else
 	{
+		pthread_mutex_lock(&philo->data->butler);
+		pthread_create(&philo->butler, NULL, &butler_routine, (void *)&philo);
+		pthread_mutex_unlock(&philo->data->butler);
 		philo_is_thinking(philo);
 		controlled_sleep(philo, philo->data->eat_time);
 	}
@@ -68,8 +71,6 @@ int	create_threads(t_data *data)
 	while (++i < data->nr_philo)
 	{
 		if (pthread_create(&data->philo[i].philo, NULL, &philo_routine,
-				(void *)&data->philo[i]) != 0 || 
-				pthread_create(&data->philo[i].butler, NULL, &butler_routine,
 				(void *)&data->philo[i]) != 0)
 		{
 			perror("failed to create thread");

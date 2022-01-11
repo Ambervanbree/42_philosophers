@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:16:48 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:25:53 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*butler_routine(void *arg)
 	int		nr_meals;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->data->butler);
 	pthread_detach(philo->butler);
 	nr_meals = nr_meals_philo(philo, CHECK);
 	controlled_sleep(philo, philo->data->die_time);
@@ -32,7 +31,6 @@ void	*butler_routine(void *arg)
 		philo_died(philo->data, ADD);
 		express_yourself(philo, DIE);
 	}
-	pthread_mutex_unlock(&philo->data->butler);
 	return (0);
 }
 
@@ -44,16 +42,17 @@ int	philo_is_eating(t_philo *philo)
 		fork_mutexes(philo, UNLOCK);
 		return (0);
 	}
+	pthread_mutex_lock(&philo->data->butler);
 	if (pthread_create(&philo->butler, NULL, &butler_routine, (void *)philo) != 0)
 	{
 		perror("failed to create thread");
 		return (0);
 	}
+	pthread_mutex_unlock(&philo->data->butler);
 	nr_meals_philo(philo, ADD);
 	express_yourself(philo, EAT);
 	controlled_sleep(philo, philo->data->eat_time);
 	philo->just_ate = 1;
-	
 	if (nr_meals_philo(philo, CHECK) == philo->data->max_meals)
 		philo_ate_enough(philo->data, ADD);
 	fork_mutexes(philo, UNLOCK);
