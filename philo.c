@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 17:07:57 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 17:10:33 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	exit_program(t_data *data)
 {
 	int	i;
-	free(data->philo);
-	free(data->fork);
 	pthread_mutex_destroy(&data->speaking);
 	pthread_mutex_destroy(&data->time_up);
 	pthread_mutex_destroy(&data->full);
@@ -26,6 +24,8 @@ void	exit_program(t_data *data)
 		pthread_mutex_destroy(&data->fork[i]);
 		pthread_mutex_destroy(&data->philo[i].pers_meals);
 	}
+	free(data->philo);
+	free(data->fork);
 }
 
 int	init_philos(t_data *data)
