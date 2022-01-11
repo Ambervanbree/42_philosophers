@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:08:06 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:15:52 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:42:22 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	express_yourself(t_philo *philo, int status);
 int		timestamp(t_data *data);
 void	controlled_sleep(t_philo *philo, int time_ms);
 int		your_time_is_up(t_philo *philo);
-void	exit_program(t_data *data);
+void	exit_function(t_data *data);
 int		create_threads(t_data *data);
 int		philo_is_thinking(t_philo *philo);
 int		philo_is_sleeping(t_philo *philo);

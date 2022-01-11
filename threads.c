@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:34:07 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:42:23 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	lonely_philosopher(t_data *data)
 	express_yourself(&data->philo[0], FORK);
 	controlled_sleep(&data->philo[0], data->die_time);
 	express_yourself(&data->philo[0], DIE);
-	exit_program(data);
+	exit_function(data);
 	return (1);
 }
 

@@ -6,13 +6,13 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:15:52 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 18:43:47 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	exit_program(t_data *data)
+void	exit_function(t_data *data)
 {
 	int	i;
 	pthread_mutex_destroy(&data->speaking);
@@ -119,10 +119,10 @@ int	main(int argc, char *argv[])
 		return (lonely_philosopher(&data));
 	if (create_threads(&data) == 0)
 	{
-		exit_program(&data);
+		exit_function(&data);
 		return (1);
 	}
-	controlled_sleep(&data.philo[1], data.die_time * 2);
-	exit_program(&data);
+	controlled_sleep(&data.philo[1], data.die_time);
+	exit_function(&data);
 	return(0);
 }
