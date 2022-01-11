@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 16:10:06 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 17:26:19 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,5 @@ int	create_threads(t_data *data)
 			return (0);
 		}
 	}
-	exit_program(data);
 	return (1);
 }
