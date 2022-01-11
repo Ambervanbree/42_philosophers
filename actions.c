@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 17:29:01 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/11 17:31:10 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*butler_routine(void *arg)
 		philo_died(philo->data, ADD);
 		express_yourself(philo, DIE);
 	}
-	return (0);
+	return ;
 }
 
 int	philo_is_eating(t_philo *philo)
