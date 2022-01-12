@@ -6,7 +6,7 @@
 #    By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/04 09:37:23 by avan-bre          #+#    #+#              #
-#    Updated: 2022/01/12 10:05:32 by avan-bre         ###   ########.fr        #
+#    Updated: 2022/01/12 10:14:22 by avan-bre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 	@echo "Compiling sources.."
-	$(CC) $(CFLAGS) $(TFLAGS) $(OBJS) -o $@ 
+	$(CC)  $(CFLAGS) $(TFLAGS) $(OBJS) -o $@
 	@echo "Ready!"
 
 clean:

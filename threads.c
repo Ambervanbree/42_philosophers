@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 10:10:33 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:22:49 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	*butler_routine(void *arg)
 	int		nr_meals;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->overall);
 	pthread_detach(philo->butler);
 	nr_meals = nr_meals_philo(philo, CHECK);
 	controlled_sleep(philo, philo->data->die_time);
@@ -28,6 +29,7 @@ void	*butler_routine(void *arg)
 		philo_died(philo->data, ADD);
 		express_yourself(philo, DIE);
 	}
+	pthread_mutex_unlock(&philo->data->overall);
 	return (0);
 }
 
@@ -49,7 +51,7 @@ void	first_round(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->butler);
 		pthread_create(&philo->butler, NULL, &butler_routine, (void *)philo);
-		printf("In FR: %p (philo %d)\n", philo->butler, philo->id);
+	//	printf("In FR: %p (philo %d)\n", philo->butler, philo->id);
 		pthread_mutex_unlock(&philo->data->butler);
 		philo_is_thinking(philo);
 		controlled_sleep(philo, philo->data->eat_time);
