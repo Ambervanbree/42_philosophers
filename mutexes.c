@@ -6,38 +6,11 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 11:44:51 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 15:29:53 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:05:11 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	fork_mutexes(t_philo *philo, int code)
-{
-	if (code == 6)
-	{
-		if (philo->id == philo->data->nr_philo)
-		{
-			pthread_mutex_lock(&philo->data->fork[0]);
-			express_yourself(philo, FORK);
-		}
-		pthread_mutex_lock(&philo->data->fork[philo->id - 1]);
-		express_yourself(philo, FORK);
-		if (!(philo->id == philo->data->nr_philo))
-		{
-			pthread_mutex_lock(&philo->data->fork[philo->id]);
-			express_yourself(philo, FORK);
-		}
-	}
-	if (code == 7)
-	{
-		if (!(philo->id == philo->data->nr_philo))
-			pthread_mutex_unlock(&philo->data->fork[philo->id]);
-		pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
-		if (philo->id == philo->data->nr_philo)
-			pthread_mutex_unlock(&philo->data->fork[0]);
-	}
-}
 
 void	express_yourself(t_philo *philo, int status)
 {
@@ -45,7 +18,8 @@ void	express_yourself(t_philo *philo, int status)
 	if (!your_time_is_up(philo))
 	{
 		if (status == 1)
-			printf("%d %d has taken a fork\n", timestamp(philo->data), philo->id);
+			printf("%d %d has taken a fork\n", timestamp(philo->data),
+				philo->id);
 		if (status == 2)
 			printf("%d %d is eating\n", timestamp(philo->data), philo->id);
 		if (status == 3)
@@ -61,7 +35,7 @@ void	express_yourself(t_philo *philo, int status)
 int	philo_ate_enough(t_data *data, int code)
 {
 	int	ret;
-	
+
 	ret = 0;
 	pthread_mutex_lock(&data->full);
 	if (code == 8)
@@ -75,7 +49,7 @@ int	philo_ate_enough(t_data *data, int code)
 int	philo_died(t_data *data, int code)
 {
 	int	ret;
-	
+
 	ret = 0;
 	pthread_mutex_lock(&data->time_up);
 	if (code == 8)
@@ -90,7 +64,7 @@ int	nr_meals_philo(t_philo *philo, int code)
 {
 	int	ret;
 
-	ret = 0;	
+	ret = 0;
 	pthread_mutex_lock(&philo->pers_meals);
 	if (code == 8)
 		philo->nr_meals++;

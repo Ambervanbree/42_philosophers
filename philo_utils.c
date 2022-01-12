@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:48:14 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:17:39 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:03:45 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,4 @@ int	timestamp(t_data *data)
 	}
 	pthread_mutex_unlock(&data->time);
 	return (ret = ms / 10 - data->start_time);
-}
-
-void	controlled_sleep(t_philo *philo, int time_ms)
-{
-	int				end_time;
-
-	end_time = timestamp(philo->data) + time_ms;
-	while (timestamp(philo->data) < end_time)
-		usleep(100);
 }

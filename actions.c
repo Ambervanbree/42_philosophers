@@ -6,11 +6,47 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 09:54:15 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 10:09:22 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	controlled_sleep(t_philo *philo, int time_ms)
+{
+	int				end_time;
+
+	end_time = timestamp(philo->data) + time_ms;
+	while (timestamp(philo->data) < end_time)
+		usleep(100);
+}
+
+void	fork_mutexes(t_philo *philo, int code)
+{
+	if (code == 6)
+	{
+		if (philo->id == philo->data->nr_philo)
+		{
+			pthread_mutex_lock(&philo->data->fork[0]);
+			express_yourself(philo, FORK);
+		}
+		pthread_mutex_lock(&philo->data->fork[philo->id - 1]);
+		express_yourself(philo, FORK);
+		if (!(philo->id == philo->data->nr_philo))
+		{
+			pthread_mutex_lock(&philo->data->fork[philo->id]);
+			express_yourself(philo, FORK);
+		}
+	}
+	if (code == 7)
+	{
+		if (!(philo->id == philo->data->nr_philo))
+			pthread_mutex_unlock(&philo->data->fork[philo->id]);
+		pthread_mutex_unlock(&philo->data->fork[philo->id - 1]);
+		if (philo->id == philo->data->nr_philo)
+			pthread_mutex_unlock(&philo->data->fork[0]);
+	}
+}
 
 int	philo_is_eating(t_philo *philo)
 {
@@ -27,6 +63,7 @@ int	philo_is_eating(t_philo *philo)
 		perror("failed to create thread");
 		return (0);
 	}
+	printf("In eat: %p (philo %d)\n", philo->butler, philo->id);
 	pthread_mutex_unlock(&philo->data->butler);
 	nr_meals_philo(philo, ADD);
 	express_yourself(philo, EAT);

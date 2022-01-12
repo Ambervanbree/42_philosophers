@@ -6,7 +6,7 @@
 #    By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/04 09:37:23 by avan-bre          #+#    #+#              #
-#    Updated: 2022/01/11 13:43:51 by avan-bre         ###   ########.fr        #
+#    Updated: 2022/01/12 10:05:32 by avan-bre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CC		=	@clang
 IFLAGS	=	-I.
 TFLAGS	=	-pthread
 CFLAGS	:=	-Wall -Werror -Wextra $(IFLAGS)
-SRCS	=	philo.c philo_utils.c routines.c mutexes.c threads.c actions.c
+SRCS	=	philo.c philo_utils.c mutexes.c threads.c actions.c
 OBJS	=	$(SRCS:.c=.o)
 
 ################################################################################
