@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:27:09 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:38:23 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:32:36 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*butler_routine(void *arg)
 	int		nr_meals;
 
 	philo = (t_philo *)arg;
-	pthread_detach(philo->butler);
 	nr_meals = nr_meals_philo(philo, CHECK);
 	controlled_sleep(philo, philo->data->die_time);
 	if (your_time_is_up(philo))
@@ -45,6 +44,7 @@ int	philo_is_eating(t_philo *philo)
 		perror("failed to create thread");
 		return (0);
 	}
+	pthread_detach(philo->butler);
 	pthread_mutex_unlock(&philo->data->butler);
 	nr_meals_philo(philo, ADD);
 	express_yourself(philo, EAT);

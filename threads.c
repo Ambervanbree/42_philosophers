@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 18:42:23 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:33:13 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	first_round(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->butler);
 		pthread_create(&philo->butler, NULL, &butler_routine, (void *)philo);
+		pthread_detach(philo->butler);
 		pthread_mutex_unlock(&philo->data->butler);
 		philo_is_thinking(philo);
 		controlled_sleep(philo, philo->data->eat_time);
