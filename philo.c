@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 09:40:06 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:56:13 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	main(int argc, char *argv[])
 		exit_function(&data);
 		return (1);
 	}
-//	controlled_sleep(&data.philo[1], data.die_time);
+	controlled_sleep(&data.philo[1], data.die_time);
 	exit_function(&data);
 	return (0);
 }
