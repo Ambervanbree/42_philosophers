@@ -6,11 +6,30 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 12:23:04 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 09:33:13 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:54:19 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*butler_routine(void *arg)
+{
+	t_philo	*philo;
+	int		nr_meals;
+
+	philo = (t_philo *)arg;
+	pthread_detach(philo->butler);
+	nr_meals = nr_meals_philo(philo, CHECK);
+	controlled_sleep(philo, philo->data->die_time);
+	if (your_time_is_up(philo))
+		return (0);
+	if (nr_meals_philo(philo, CHECK) == nr_meals)
+	{
+		philo_died(philo->data, ADD);
+		express_yourself(philo, DIE);
+	}
+	return (0);
+}
 
 int	lonely_philosopher(t_data *data)
 {
@@ -30,7 +49,6 @@ void	first_round(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->butler);
 		pthread_create(&philo->butler, NULL, &butler_routine, (void *)philo);
-		pthread_detach(philo->butler);
 		pthread_mutex_unlock(&philo->data->butler);
 		philo_is_thinking(philo);
 		controlled_sleep(philo, philo->data->eat_time);

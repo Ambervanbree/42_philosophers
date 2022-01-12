@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:07:13 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/11 19:10:29 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/12 09:40:06 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exit_function(t_data *data)
 {
 	int	i;
+
 	pthread_mutex_destroy(&data->speaking);
 	pthread_mutex_destroy(&data->time_up);
 	pthread_mutex_destroy(&data->full);
@@ -74,15 +75,13 @@ int	init_program(t_data *data, char *argv[])
 	pthread_mutex_init(&data->full, NULL);
 	pthread_mutex_init(&data->time, NULL);
 	pthread_mutex_init(&data->butler, NULL);
-	if (init_philos(data) == 0)
-		return (0);
-	return (1);
+	return (init_philos(data));
 }
 
 int	incorrect_usage(int argc, char *argv[])
 {
 	int	i;
-	
+
 	if (!(argc == 5 || argc == 6))
 	{
 		ft_putstr_fd("Error, expected usage: ", 2);
@@ -98,7 +97,8 @@ int	incorrect_usage(int argc, char *argv[])
 	i = 1;
 	while (argv[++i])
 	{
-		if ((ft_atoi(argv[i]) == 0 && ft_strlen(argv[i]) > 1) || ft_atoi(argv[i]) < 0)
+		if ((ft_atoi(argv[i]) == 0 && ft_strlen(argv[i]) > 1)
+			|| ft_atoi(argv[i]) < 0)
 		{
 			ft_putstr_fd("Error: Invalid argument detected\n", 2);
 			return (1);
@@ -111,7 +111,6 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 
-	
 	if (incorrect_usage(argc, argv))
 		return (1);
 	if (init_program(&data, argv) == 0)
@@ -125,5 +124,5 @@ int	main(int argc, char *argv[])
 	}
 //	controlled_sleep(&data.philo[1], data.die_time);
 	exit_function(&data);
-	return(0);
+	return (0);
 }
