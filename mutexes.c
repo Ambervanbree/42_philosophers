@@ -6,7 +6,7 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 11:44:51 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 10:05:11 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/13 14:50:22 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,25 @@
 
 void	express_yourself(t_philo *philo, int status)
 {
-	pthread_mutex_lock(&philo->data->speaking);
-	if (!your_time_is_up(philo))
+	long	time;
+
+	time = timestamp() - philo->data->start_time;
+	if (status == 5)
+	{
+		controlled_sleep(10);
+		printf("%ld %d died\n", time, philo->id);
+	}
+	else if (!your_time_is_up(philo))
 	{
 		if (status == 1)
-			printf("%d %d has taken a fork\n", timestamp(philo->data),
-				philo->id);
+			printf("%ld %d has taken a fork\n", time, philo->id);
 		if (status == 2)
-			printf("%d %d is eating\n", timestamp(philo->data), philo->id);
+			printf("%ld %d is eating\n", time, philo->id);
 		if (status == 3)
-			printf("%d %d is sleeping\n", timestamp(philo->data), philo->id);
+			printf("%ld %d is sleeping\n", time, philo->id);
 		if (status == 4)
-			printf("%d %d is thinking\n", timestamp(philo->data), philo->id);
+			printf("%ld %d is thinking\n", time, philo->id);
 	}
-	if (status == 5)
-		printf("%d %d died\n", timestamp(philo->data), philo->id);
-	pthread_mutex_unlock(&philo->data->speaking);
 }
 
 int	philo_ate_enough(t_data *data, int code)
@@ -60,25 +63,14 @@ int	philo_died(t_data *data, int code)
 	return (ret);
 }
 
-int	nr_meals_philo(t_philo *philo, int code)
+void	philo_dies(t_philo *philo)
 {
-	int	ret;
-
-	ret = 0;
-	pthread_mutex_lock(&philo->pers_meals);
-	if (code == 8)
-		philo->nr_meals++;
-	if (code == 9)
-		ret = philo->nr_meals;
-	pthread_mutex_unlock(&philo->pers_meals);
-	return (ret);
-}
-
-int	your_time_is_up(t_philo *philo)
-{
-	if (philo_died(philo->data, CHECK))
-		return (1);
-	if (philo_ate_enough(philo->data, CHECK) == philo->data->nr_philo)
-		return (1);
-	return (0);
+	controlled_sleep(philo->data->die_time);
+	if (!your_time_is_up(philo))
+	{
+		pthread_mutex_lock(&philo->data->dead);
+		philo_died(philo->data, ADD);
+		express_yourself(philo, DIE);
+		pthread_mutex_unlock(&philo->data->dead);
+	}
 }

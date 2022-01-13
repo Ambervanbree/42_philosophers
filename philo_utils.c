@@ -6,21 +6,13 @@
 /*   By: avan-bre <avan-bre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 10:48:14 by avan-bre          #+#    #+#             */
-/*   Updated: 2022/01/12 10:03:45 by avan-bre         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:01:51 by avan-bre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r')
-		return (1);
-	return (0);
-}
-
-int	ft_atoi(const char *str)
+int	ft_atoi_philo(const char *str)
 {
 	long int	i;
 	long int	neg;
@@ -29,8 +21,6 @@ int	ft_atoi(const char *str)
 	i = 0;
 	neg = 1;
 	ret = 0;
-	while (ft_isspace(str[i]))
-		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
@@ -46,6 +36,8 @@ int	ft_atoi(const char *str)
 		if (neg == -1 && ret > 2147483648)
 			return (0);
 	}
+	if (str[i] != 0)
+		return (0);
 	return ((int)ret * neg);
 }
 
@@ -64,21 +56,21 @@ void	ft_putstr_fd(char *s, int fd)
 	write(fd, s, ft_strlen(s));
 }
 
-int	timestamp(t_data *data)
+long	timestamp(void)
 {
 	long			ms;
-	int				ret;
 	struct timeval	current_time;
 
-	pthread_mutex_lock(&data->time);
 	gettimeofday(&current_time, NULL);
 	ms = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;
-	if (data->start_time == 0)
-	{
-		data->start_time = ms / 10;
-		pthread_mutex_unlock(&data->time);
-		return (0);
-	}
-	pthread_mutex_unlock(&data->time);
-	return (ret = ms / 10 - data->start_time);
+	return (ms);
+}
+
+void	controlled_sleep(int time_ms)
+{
+	long	start;
+
+	start = timestamp();
+	while (timestamp() < (start + time_ms))
+		usleep(100);
 }
